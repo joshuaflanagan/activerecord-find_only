@@ -96,4 +96,87 @@ RSpec.describe ActiveRecord::Only do
       }.to raise_error(ActiveRecord::Only::TooManyRecords)
     end
   end
+
+  context "when an association is not loaded" do
+    before do
+      @record = Widget.create!(name: "First", active: true)
+      @record.builds.create!(name: "A")
+      @record.reload
+    end
+
+    specify ".first makes a database query" do
+      accessed_db = check_db_access{
+        expect(@record.builds.first).to_not be_nil
+      }
+
+      expect(accessed_db).to be_truthy
+    end
+
+    specify ".only makes a database query" do
+      accessed_db = check_db_access{
+        expect(@record.builds.only).to_not be_nil
+      }
+
+      expect(accessed_db).to be_truthy
+    end
+  end
+
+  context "when an association is loaded" do
+    before do
+      @record = Widget.create!(name: "First", active: true)
+      @record.builds.create!(name: "A")
+      @record.builds.to_a
+    end
+
+    specify ".first does not make a database query" do
+      accessed_db = check_db_access{
+        expect(@record.builds.first).to_not be_nil
+      }
+
+      expect(accessed_db).to be_falsey
+    end
+
+    specify ".only does not make a database query" do
+      accessed_db = check_db_access{
+        expect(@record.builds.only).to_not be_nil
+      }
+
+      expect(accessed_db).to be_falsey
+    end
+
+    specify ".only! does not make a database query" do
+      accessed_db = check_db_access{
+        expect(@record.builds.only!).to_not be_nil
+      }
+
+      expect(accessed_db).to be_falsey
+    end
+
+    context "and association has more than one record" do
+      before do
+        @record.builds.create!(name: "B")
+        @record.builds.to_a
+      end
+
+      specify ".only raises without making a database query" do
+        accessed_db = check_db_access{
+          expect{
+            @record.builds.only
+          }.to raise_error(ActiveRecord::Only::TooManyRecords)
+        }
+
+        expect(accessed_db).to be_falsey
+      end
+
+      specify ".only! raises without making a database query" do
+        accessed_db = check_db_access{
+          expect{
+            @record.builds.only!
+          }.to raise_error(ActiveRecord::Only::TooManyRecords)
+        }
+
+        expect(accessed_db).to be_falsey
+      end
+    end
+  end
 end

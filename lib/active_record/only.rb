@@ -33,4 +33,17 @@ module ActiveRecord
     delegate :only, :only!, to: :all
   end
 
+  Associations::CollectionProxy.class_eval do
+    def only
+      if loaded?
+        if records.length > 1
+          raise ActiveRecord::Only::TooManyRecords
+        end
+        records[0]
+      else
+        super
+      end
+    end
+  end
+
 end

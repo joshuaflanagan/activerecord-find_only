@@ -33,3 +33,12 @@ def rebuild_db
   end
 
 end
+
+def check_db_access
+  db_access = false
+  on_query = ->(*args){ db_access = true}
+  ActiveSupport::Notifications.subscribed(on_query, "sql.active_record") do
+    yield
+  end
+  db_access
+end

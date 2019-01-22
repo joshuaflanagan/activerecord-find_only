@@ -90,9 +90,9 @@ RSpec.describe ActiveRecord::Only do
       }.to raise_error(ActiveRecord::Only::TooManyRecords)
     end
 
-    specify ".only raises TooManyRecords" do
+    specify ".only! raises TooManyRecords" do
       expect{
-        Widget.where(active:true).only
+        Widget.where(active:true).only!
       }.to raise_error(ActiveRecord::Only::TooManyRecords)
     end
   end

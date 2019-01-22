@@ -10,11 +10,11 @@ module ActiveRecord
     # If no record matches the criteria, nil is returned.
     # If more than one record matches the criteria, TooManyRecords is raised.
     def only
-      loaded = take(2)
-      if loaded.length > 1
+      found_records = take(2)
+      if found_records.length > 1
         raise TooManyRecords
       end
-      loaded[0]
+      found_records[0]
     end
 
     # Gives the only record that matches the criteria.

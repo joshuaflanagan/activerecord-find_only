@@ -1,5 +1,8 @@
 /.bundle/
+/bundle/
 /.yardoc
+/.byebug_history
+/.rvmrc
 /_yardoc/
 /coverage/
 /doc/

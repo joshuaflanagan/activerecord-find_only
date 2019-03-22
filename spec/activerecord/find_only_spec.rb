@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe ActiveRecord::Only do
+RSpec.describe ActiveRecord::FindOnly do
 
   class Build < ActiveRecord::Base
 
@@ -18,18 +18,18 @@ RSpec.describe ActiveRecord::Only do
       @record = Widget.create!(name: "First", active: true)
     end
 
-    specify "can call .only on a Relation" do
+    specify "can call .find_only on a Relation" do
       other = Widget.create!(name: "Second", active: false)
-      expect(Widget.where(active: true).only).to eq(@record)
+      expect(Widget.where(active: true).find_only).to eq(@record)
     end
 
-    specify "can call .only on an ActiveRecord::Base class" do
-      expect(Widget.only).to eq(@record)
+    specify "can call .find_only on an ActiveRecord::Base class" do
+      expect(Widget.find_only).to eq(@record)
     end
 
-    specify "can call .only on an association" do
+    specify "can call .find_only on an association" do
       only_build = @record.builds.create!(name: "A")
-      expect(@record.builds.only).to eq(only_build)
+      expect(@record.builds.find_only).to eq(only_build)
     end
   end
 
@@ -42,13 +42,13 @@ RSpec.describe ActiveRecord::Only do
       expect(Widget.where(active: true).first).to be_nil
     end
 
-    specify ".only returns nil" do
-      expect(Widget.where(active: true).only).to be_nil
+    specify ".find_only returns nil" do
+      expect(Widget.where(active: true).find_only).to be_nil
     end
 
-    specify ".only! raises" do
+    specify ".find_only! raises" do
       expect{
-        Widget.where(active: true).only!
+        Widget.where(active: true).find_only!
       }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
@@ -63,12 +63,12 @@ RSpec.describe ActiveRecord::Only do
       expect(Widget.where(active:true).first).to eq(@record)
     end
 
-    specify ".only returns the record" do
-      expect(Widget.where(active:true).only).to eq(@record)
+    specify ".find_only returns the record" do
+      expect(Widget.where(active:true).find_only).to eq(@record)
     end
 
-    specify ".only! returns the record" do
-      expect(Widget.where(active:true).only).to eq(@record)
+    specify ".find_only! returns the record" do
+      expect(Widget.where(active:true).find_only).to eq(@record)
     end
 
   end
@@ -84,16 +84,16 @@ RSpec.describe ActiveRecord::Only do
       expect(Widget.where(active:true).first).to_not be_nil
     end
 
-    specify ".only raises TooManyRecords" do
+    specify ".find_only raises TooManyRecords" do
       expect{
-        Widget.where(active:true).only
-      }.to raise_error(ActiveRecord::Only::TooManyRecords)
+        Widget.where(active:true).find_only
+      }.to raise_error(ActiveRecord::FindOnly::TooManyRecords)
     end
 
-    specify ".only! raises TooManyRecords" do
+    specify ".find_only! raises TooManyRecords" do
       expect{
-        Widget.where(active:true).only!
-      }.to raise_error(ActiveRecord::Only::TooManyRecords)
+        Widget.where(active:true).find_only!
+      }.to raise_error(ActiveRecord::FindOnly::TooManyRecords)
     end
   end
 
@@ -112,9 +112,9 @@ RSpec.describe ActiveRecord::Only do
       expect(accessed_db).to be_truthy
     end
 
-    specify ".only makes a database query" do
+    specify ".find_only makes a database query" do
       accessed_db = check_db_access{
-        expect(@record.builds.only).to_not be_nil
+        expect(@record.builds.find_only).to_not be_nil
       }
 
       expect(accessed_db).to be_truthy
@@ -136,17 +136,17 @@ RSpec.describe ActiveRecord::Only do
       expect(accessed_db).to be_falsey
     end
 
-    specify ".only does not make a database query" do
+    specify ".find_only does not make a database query" do
       accessed_db = check_db_access{
-        expect(@record.builds.only).to_not be_nil
+        expect(@record.builds.find_only).to_not be_nil
       }
 
       expect(accessed_db).to be_falsey
     end
 
-    specify ".only! does not make a database query" do
+    specify ".find_only! does not make a database query" do
       accessed_db = check_db_access{
-        expect(@record.builds.only!).to_not be_nil
+        expect(@record.builds.find_only!).to_not be_nil
       }
 
       expect(accessed_db).to be_falsey
@@ -158,21 +158,21 @@ RSpec.describe ActiveRecord::Only do
         @record.builds.to_a
       end
 
-      specify ".only raises without making a database query" do
+      specify ".find_only raises without making a database query" do
         accessed_db = check_db_access{
           expect{
-            @record.builds.only
-          }.to raise_error(ActiveRecord::Only::TooManyRecords)
+            @record.builds.find_only
+          }.to raise_error(ActiveRecord::FindOnly::TooManyRecords)
         }
 
         expect(accessed_db).to be_falsey
       end
 
-      specify ".only! raises without making a database query" do
+      specify ".find_only! raises without making a database query" do
         accessed_db = check_db_access{
           expect{
-            @record.builds.only!
-          }.to raise_error(ActiveRecord::Only::TooManyRecords)
+            @record.builds.find_only!
+          }.to raise_error(ActiveRecord::FindOnly::TooManyRecords)
         }
 
         expect(accessed_db).to be_falsey

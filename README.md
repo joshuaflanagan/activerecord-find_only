@@ -1,12 +1,12 @@
-# ActiveRecord::Only
+# ActiveRecord::FindOnly
 
-Provides the `#only` and `#only!` methods for querying ActiveRecord objects.
+Provides the `#find_only` and `#find_only!` methods for querying ActiveRecord objects.
 
-`#only` - returns the only record that meets the criteria. If no records match
+`#find_only` - returns the only record that meets the criteria. If no records match
 the criteria, `nil` is returned. Raises `TooManyRecords` if more than one
 records matches the criteria.
 
-`#only!` - returns the only record that meets the criteria. If no records match
+`#find_only!` - returns the only record that meets the criteria. If no records match
 the criteria, `RecordNotFound` is raised. Raises `TooManyRecords` if more than
 one records matches the criteria.
 
@@ -15,7 +15,7 @@ one records matches the criteria.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'active_record-only'
+gem 'active_record-find_only'
 ```
 
 And then execute:
@@ -24,7 +24,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install active_record-only
+    $ gem install active_record-find_only
 
 ## Usage
 

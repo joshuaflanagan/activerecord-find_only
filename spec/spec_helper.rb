@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "active_record/only"
+require "active_record/find_only"
 
 ActiveRecord::Base.establish_connection(adapter: :sqlite3, database: ":memory:")
 

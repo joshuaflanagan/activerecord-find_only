@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Query for a single item, and ensure it is the only one.}
   spec.description   = %q{Provides find_only and find_only! query methods}
-  spec.homepage      = "https://github.com/joshuaflanagan/active_record-find_only"
+  spec.homepage      = "https://github.com/joshuaflanagan/activerecord-find_only"
   spec.license       = "MIT"
 
   # Specify which files should be added to the gem when it is released.

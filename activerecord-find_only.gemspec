@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "active_record/find_only/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "active_record-find_only"
+  spec.name          = "activerecord-find_only"
   spec.version       = ActiveRecord::FindOnly::VERSION
   spec.authors       = ["Joshua Flanagan"]
   spec.email         = ["joshuaflanagan@gmail.com"]

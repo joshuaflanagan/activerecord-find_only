@@ -1,3 +1,11 @@
+unless defined?(Arel)
+  raise 'activerecord-find_only has to be required after ActiveRecord/Arel'
+end
+
+unless defined?(ActiveRecord)
+  raise 'activerecord-find_only has to be required after ActiveRecord'
+end
+
 require "active_record"
 require "active_record/find_only/version"
 

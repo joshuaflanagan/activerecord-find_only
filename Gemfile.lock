@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    active_record-find_only (0.2.0)
+    activerecord-find_only (0.3.0)
       activerecord
 
 GEM
@@ -48,7 +48,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_record-find_only!
+  activerecord-find_only!
   bundler (~> 1.16)
   byebug
   rake (~> 10.0)
